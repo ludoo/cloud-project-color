@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="style.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />
+  </head>
+  <body ng-app="Popup" ng-csp>
+    <div id="app" ng-controller="PopupController as $ctrl">
+      <header>
+        <h1 class="title">{{$ctrl.project.name}}</h1>
+        <h2 ng-if="$ctrl.project.name != $ctrl.project.id">{{$ctrl.project.id}}</h2>
+      </header>
+      <div id="tabs">
+        <div ng-class="$ctrl.activeTab == 'project' ? 'active' : ''" ng-click="$ctrl.activeTab = 'project'">project</div>
+        <div ng-class="$ctrl.activeTab == 'list' ? 'active' : ''" ng-click="$ctrl.activeTab = 'list'">all</div>
+      </div>
+      <div id="inputs" ng-if="$ctrl.activeTab == 'project'">
+        <form name="inputForm">
+          <input type="text" id="hex" placeholder="#hex" ng-model="$ctrl.project.color" ng-pattern="/^#[a-zA-Z0-9]{6}$/" />
+          <button ng-click="$ctrl.set()" ng-class="{active: $ctrl.hasColor, disabled: !$ctrl.hasColor}" ng-disabled="inputForm.$invalid">set</button>
+          <button ng-click="$ctrl.unset()" ng-if="$ctrl.hasColor">unset</button>
+          <div style="width: 60px;" ng-if="!$ctrl.hasColor"></div>
+        </form>
+      </div>
+      <div id="swatches" ng-if="$ctrl.activeTab == 'project'">
+        <div ng-repeat="set in $ctrl.swatches">
+          <div ng-repeat="color in set" ng-style="{'background-color': color}" ng-click="$ctrl.set(color)"></div>
+        </div>
+      </div>
+      <div id="list" ng-if="$ctrl.activeTab == 'list'">
+        <ul ng-if="$ctrl.hasSavedColors">
+          <li ng-repeat="color in $ctrl.savedColors" ng-style="{'border-left': 'solid 3px ' + color.color}">
+            <svg viewBox="0 0 18 18" fit="" preserveAspectRatio="xMidYMid meet" focusable="false"><path d="M10.557 11.99l-1.71-2.966 1.71-3.015h3.42l1.71 3.01-1.71 2.964h-3.42zM4.023 16l-1.71-2.966 1.71-3.015h3.42l1.71 3.01L7.443 16h-3.42zm0-8.016l-1.71-2.966 1.71-3.015h3.42l1.71 3.015-1.71 2.966h-3.42z" fill-rule="evenodd"></path></svg>
+            {{color.id}}
+            <div style="flex-grow: 1"></div>
+            <svg ng-click="$ctrl.unset(color.id)" style="cursor: pointer" height="24" viewBox="0 0 24 24" width="24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+          </li>
+        </ul>
+        <p ng-if="!$ctrl.hasSavedColors">
+          No colors set yet.
+        </p>
+      </div>
+    </div>
+    <script src="angular.min.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>

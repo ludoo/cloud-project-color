@@ -1,0 +1,32 @@
+{
+  "name": "cloud-project-color-extension",
+  "version": "0.0.1",
+  "description": "Chrome extension to color the Google cloud console switcher.",
+  "author": "ludo <ludomagno@google.com>",
+  "license": "Apache-2.0",
+  "main": "src/main.js",
+  "config": {
+    "tag_suffix": "",
+    "dist_files": "manifest.json popup.html style.css src/content.js icon-128-gray.png icon-128.png",
+    "dist_scripts": "clean files ng background popup"
+  },
+  "scripts": {
+    "version": "sed -i'' -E 's/(\"version\": )\"[^\"]+\"/\\1\"'$npm_package_version'\"/' manifest.json",
+    "postversion": "git tag v${npm_package_version}${npm_package_config_tag_suffix} && git add manifest.json package.json",
+    "watch:background": "watchify -vd src/background.js -o dist/background.js",
+    "watch:popup": "watchify -vd src/popup.js -o dist/popup.js",
+    "dist:files": "cp $npm_package_config_dist_files dist/",
+    "dist:background": "NODE_ENV=production browserify -g envify src/background.js >dist/background.js",
+    "dist:popup": "NODE_ENV=production browserify -g envify src/popup.js >dist/popup.js",
+    "dist:ng": "cp node_modules/angular/angular.min.js dist/",
+    "dist:clean": "rm -rf dist && mkdir -p dist",
+    "dist": "for s in $npm_package_config_dist_scripts; do npm run dist:$s; done",
+    "zip": "npm run dist && zip -r pantheon-color-${npm_package_version}.zip dist"
+  },
+  "devDependencies": {
+    "angular": "^1.6.10",
+    "browserify": "^16.2.0",
+    "envify": "^4.1.0",
+    "watchify": "^3.11.0"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "manifest_version": 2,
+  "name": "Cloud project highlighter",
+  "description": "Optionally change color to the cloud console project switcher.",
+  "version": "0.0.1.3",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAiOgCoK/i04m3MKlZbBtvHZfxRxYJ1Kz9+NedqjAHmSeynHn4l5TJ0MVdaj4LPPsmYwS4XCycEu0PYA6nsyzlRL3y0hYSDAxff25Vs/MAOVue5xF08PEyOGCcw7NhX/75TJJRFyO7yzaHtIwUJdLrdalsD2d+Q3CYE+3bEH4atTlwU28PDUNZXp9ptzStYSXnfr7hf6QQID1I/AFOFu33zQkvWyVlBWkafhDSUvBBO068iLsVqFvYH6dYLtCPokPgFfLMwqaUYU8jg0f+J/gnOCEtaSVKYWcWbI7dQguQa4SzolPT8q/R0/xmGADHSRjmY4VFxEA3ib0Y8ZPRZ0CnLwIDAQAB",
+  "browser_action": {
+    "default_popup": "popup.html"
+  },
+  "background": { "scripts": ["background.js"] },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://console.cloud.google.com/*"
+      ],
+      "js": ["content.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "permissions": [
+    "storage",
+    "*://console.cloud.google.com/**"
+  ],
+  "icons": {
+    "128": "icon-128.png"
+  }
+}
